@@ -1,6 +1,6 @@
 # Bot API and MTProto name reconciliation.
 #
-# rename:      the spec calls it X, wzgram calls it Y
+# rename:       the spec calls it X, wzgram calls it Y
 # unsupported: the spec has it, wzgram deliberately does not, with the reason
 #
 # Lookup order is entity, then raw function (MTProto only), then "*".
@@ -430,7 +430,7 @@ botapi:
     sendGift:
       text_parse_mode: >-
         the quoted values in this description are the entity types the text may
-        contain, not the parse modes the field accepts
+        contain, not the parse modes the field accept
 
 mtproto:
   internal:
@@ -444,6 +444,7 @@ mtproto:
   field_rename:
     "*":
       peer: chat_id
+      lang_code: language_code
       message: text
       silent: disable_notification
       no_webpage: disable_web_page_preview
@@ -458,7 +459,21 @@ mtproto:
       schedule_repeat_period: repeat_period
       suggested_post: suggested_post_parameters
 
-
+    get_bot_name:
+      bot: for_my_bot
+    get_bot_info_description:
+      bot: for_my_bot
+    get_bot_info_short_description:
+      bot: for_my_bot
+    set_bot_name:
+      bot: for_my_bot
+    set_bot_info_description:
+      bot: for_my_bot
+    set_bot_info_short_description:
+      bot: for_my_bot
+      about: short_description
+    get_stars_balance:
+      peer: chat_id
     approve_suggested_post:
       msg_id: message_id
       schedule_date: send_date
@@ -595,6 +610,23 @@ mtproto:
       title_missing: the method always sends a title, so it never marks one absent
     get_me:
       id: the method exists to fetch the current user, so it passes InputUserSelf
+    set_bot_name:
+      about: the method only sets the name; use set_bot_info_short_description
+      description: the method only sets the name; use set_bot_info_description
+    set_bot_info_description:
+      name: the method only sets the description; use set_bot_name
+      about: the method only sets the description; use set_bot_info_short_description
+    set_bot_info_short_description:
+      name: the method only sets the short description; use set_bot_name
+      description: the method only sets the short description; use set_bot_info_description
+    get_stars_balance:
+      ascending: pagination sorting is used in get_star_transactions
+      inbound: filtering transactions is done via get_star_transactions
+      limit: pagination limit is used in get_star_transactions
+      offset: pagination offset is used in get_star_transactions
+      outbound: filtering transactions is done via get_star_transactions
+      subscription_id: subscription filtering is done via get_star_transactions
+      ton: the TON balance is read with get_business_account_ton_balance
     approve_chat_join_request:
       approved: the method exists to approve, so it sets this itself
     decline_chat_join_request:
